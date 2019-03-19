@@ -190,6 +190,11 @@ void cvFindExtrinsicCameraParams2( const CvMat* object_points,
                                 CvMat* translation_vector,
                                 int use_extrinsic_guess CV_DEFAULT(0) );
 
+void cvFindExtrinsicCameraParamsAlex(const CvMat* _mn, const CvMat* objectPoints,
+                                    const CvMat* imagePoints, const CvMat* A,
+                                    const CvMat* distCoeffs, CvMat* rvec, CvMat* tvec,
+                                    int useExtrinsicGuess );
+
 /* Computes initial estimate of the intrinsic camera parameters
    in case of planar calibration target (e.g. chessboard) */
 void cvInitIntrinsicParams2D( const CvMat* object_points,

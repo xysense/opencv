@@ -164,9 +164,18 @@ bool solvePnP( InputArray _opoints, InputArray _ipoints,
         CvMat c_objectPoints = cvMat(opoints), c_imagePoints = cvMat(ipoints);
         CvMat c_cameraMatrix = cvMat(cameraMatrix), c_distCoeffs = cvMat(distCoeffs);
         CvMat c_rvec = cvMat(rvec), c_tvec = cvMat(tvec);
-        cvFindExtrinsicCameraParams2(&c_objectPoints, &c_imagePoints, &c_cameraMatrix,
+
+        Mat undistortedPoints;
+        fisheye::undistortPoints(ipoints, undistortedPoints, cameraMatrix, distCoeffs);
+        CvMat undistInternal = cvMat(undistortedPoints);
+
+        cvFindExtrinsicCameraParamsAlex(&undistInternal, &c_objectPoints, &c_imagePoints, &c_cameraMatrix,
                                      (c_distCoeffs.rows && c_distCoeffs.cols) ? &c_distCoeffs : 0,
                                      &c_rvec, &c_tvec, useExtrinsicGuess );
+
+        // cvFindExtrinsicCameraParams2(&c_objectPoints, &c_imagePoints, &c_cameraMatrix,
+        //                              (c_distCoeffs.rows && c_distCoeffs.cols) ? &c_distCoeffs : 0,
+        //                              &c_rvec, &c_tvec, useExtrinsicGuess );
         result = true;
     }
     /*else if (flags == SOLVEPNP_DLS)
